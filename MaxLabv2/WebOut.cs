@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Text.Json.Serialization;
+
 
 namespace MaxLabv2
 {
@@ -12,10 +14,18 @@ namespace MaxLabv2
         public string shortst { get; set; }
     }
 
-    public class Weboo
+    public class FileJsonChar
     {
-      
-        public string rand { get; set; }
-        public string abob { get; set; }
+        [JsonPropertyName("ParallelLimit")]
+        public int ParallelLimit { get; set; }
+        [JsonPropertyName("Blacklist")]
+        public string[] Blacklist { get; set; }
+    }
+
+    public class FileJson
+    {
+        [JsonPropertyName("RandomApi")]
+        public string RandomApi { get; set; }
+        public FileJsonChar Settings { get; set; }
     }
 }

@@ -1,5 +1,8 @@
 using Microsoft.OpenApi.Models;
 
+
+
+
 namespace MaxLabv2
 {
     public class Program
@@ -13,6 +16,7 @@ namespace MaxLabv2
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
+            
             builder.Services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MaxAPI", Version = "v1" });
@@ -34,6 +38,8 @@ namespace MaxLabv2
 
             app.UseAuthorization();
 
+            app.UseConcurrencyLimit(maxConcurrentRequests: Programs.data.Settings.ParallelLimit);
+            
 
             app.MapControllers();
 

@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Collections.Generic;
+using System.Text.Json;
 
 namespace MaxLabv2
 {
@@ -84,7 +85,7 @@ namespace MaxLabv2
             }
         }
         //поск строки гласной
-        static void glas(string output)
+        public static string glas(string output)
         {
             int flag = 0;
             int id1 = 0;
@@ -105,11 +106,12 @@ namespace MaxLabv2
 
             }
             if (flag == 2)
-                webOut.st2 = output.Substring(id1, ++id2);
-            //Console.WriteLine(output.Substring(id1, ++id2));
+                return output.Substring(id1, ++id2);
+            else
+                return "";
         }
         //быстрая сортировка
-        static string QuickSort(char[] str, int minID, int maxID)
+        public static string QuickSort(char[] str, int minID, int maxID)
         {
             if (minID >= maxID)
                 return new string(str);
@@ -147,7 +149,7 @@ namespace MaxLabv2
             right = temp;
         }
 
-        static string TreeSort(char[] str)
+         public static string TreeSort(char[] str)
         {
 
             var tree = new Tree_node(str[0]);
@@ -157,7 +159,7 @@ namespace MaxLabv2
             return tree.Tostring();
         }
 
-        public static void let(string str)
+        public static Dictionary<char, int> let(string str)
         {
             var letters = new Dictionary<char, int>();
             foreach (char c in str)
@@ -167,8 +169,38 @@ namespace MaxLabv2
                 else
                     letters.Add(c, 1);
             }
-            webOut.letters = letters;
+            return letters;
         }
+
+        public static string revers1(string a) 
+        {
+            string b = a.Substring(0, a.Length / 2);
+            char[] bc = b.ToCharArray();
+            Array.Reverse(bc);
+            a = a.Substring(a.Length / 2);
+            char[] ac = a.ToCharArray();
+            Array.Reverse(ac);
+            return String.Concat<char>(bc) + String.Concat<char>(ac);
+        }
+
+        public static string revers2(string a) 
+        {
+            char[] b = a.ToCharArray();
+            Array.Reverse(b);
+            return String.Concat<char>(b) + a;
+        }
+
+        public static string inval(string a)
+        {
+            string exept = "";
+            for (int i = 0; i < a.Length; i++)
+            {
+                if (a[i] < 97 || a[i] > 122)
+                    exept = exept + a[i];
+            }
+            return exept;
+        }
+
 
 
         public static WebOut Base(string a, string sw)
@@ -183,11 +215,8 @@ namespace MaxLabv2
                 string exept = "";
                 //была ошибка в ограничении for
                 //проверка на соотрветсвие требованиям строки
-                for (int i = 0; i < a.Length; i++)
-                {
-                    if (a[i] < 97 || a[i] > 122)
-                        exept = exept + a[i];
-                }
+                exept = inval( a);
+
                 if (String.IsNullOrEmpty(exept))
                 {
                     string[] blacklist = data.Settings.Blacklist;
@@ -202,31 +231,20 @@ namespace MaxLabv2
 
                         if (a.Length % 2 == 0)
                         {
-                            string b = a.Substring(0, a.Length / 2);
-                            char[] bc = b.ToCharArray();
-                            Array.Reverse(bc);
-                            a = a.Substring(a.Length / 2);
-                            char[] ac = a.ToCharArray();
-                            Array.Reverse(ac);
-                            output = String.Concat<char>(bc) + String.Concat<char>(ac);
+
+                            output = revers1(a);
                             webOut.st1 = output;
-                            //Console.WriteLine(output);
-                            let(output);
-
-
-                            glas(output);
+                            webOut.letters = let(output);
+                            webOut.st2 = glas(output);
                         }
                         else
                         {
-                            char[] b = a.ToCharArray();
-                            Array.Reverse(b);
-                            output = String.Concat<char>(b) + a;
+                            output = revers2(a);
                             webOut.st1 = output;
+                            webOut.letters = let(output);
+                            webOut.st2 = glas(output);
 
-                            let(output);
-                            glas(output);
-
-                        }
+                    }
 
                         switch (sw)
                         {
